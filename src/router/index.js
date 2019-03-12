@@ -19,6 +19,7 @@ export const constantRouterMap = [
   {
     path: '/scan',
     component: Layout,
+    name: 'saomi',
     children: [
       {
         path: '',
