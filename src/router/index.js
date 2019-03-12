@@ -11,44 +11,45 @@ export const constantRouterMap = [
     component: () => import('@/views/login/index'),
     hidden: true,
   },
-  // dashboard
   {
     path: '',
-    component: Layout,
-    redirect: 'dashboard',
-    children: [
-      {
-        path:'scan',
-        component: () => import('@/views/scanPaper'),
-        name:'scan',
-        meta:{ title :'扫描', icon:'dashboard'},
-      }
-    ]
+    redirect: '/scan',
   },
+  // scan
   {
-    path: '',
+    path: '/scan',
     component: Layout,
-    redirect: 'search',
     children: [
       {
-        path: 'modify',
-        component: () => import('@/views/modify'),
-        name: 'modify',
-        meta: { title: '修改', icon: 'dashboard'},
-      }
+        path: '',
+        component: () => import('@/views/scanPaper'),
+        name: 'scan',
+        meta: { title: '扫描', icon: 'dashboard' },
+      },
     ],
   },
   {
-    path: '',
+    path: '/modify',
     component: Layout,
-    redirect: 'search',
     children: [
       {
-        path: 'search',
+        path: '',
+        component: () => import('@/views/modify'),
+        name: 'modify',
+        meta: { title: '修改', icon: 'dashboard' },
+      },
+    ],
+  },
+  {
+    path: '/search',
+    component: Layout,
+    children: [
+      {
+        path: '',
         component: () => import('@/views/search'),
         name: 'search',
-        meta: { title: '查找', icon: 'dashboard',  },
-      }
+        meta: { title: '查找', icon: 'dashboard' },
+      },
     ],
   },
   // 404
