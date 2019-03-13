@@ -10,9 +10,12 @@
             <div>
               <img :src="results.image" class='image' />
               <div>
-                <div style="margin:10px;height:40px">
-                  <span v-if="!isEdit">{{ results.studentNO }}</span>
-                  <el-input v-else-if="isEdit" :key="results.studentNO" v-model="results.studentNO">
+                <div style="margin:10px; height:40px">
+                  <span v-if="isEdit !== results.studentNO">{{ results.studentNO }}</span>
+                  <el-input
+                    v-if="isEdit === results.studentNO"
+                    :key="results.studentNO"
+                    v-model="results.studentNO">
                     <i slot="append" class="remove el-icon-remove"></i>
                   </el-input>
                 </div>
@@ -20,7 +23,7 @@
                   <el-button
                     type="primary"
                     icon="el-icon-edit"
-                    @click.stop="handleEditStudentNO">
+                    @click.stop="handleEditStudentNO(results.studentNO)">
                     编辑
                   </el-button>
                   <el-button
@@ -51,7 +54,7 @@
 export default {
   data() {
     return {
-      isEdit: false,
+      isEdit: -1,
       currPage: 1,
       pageSize: 8,
       resultsList: [
@@ -93,11 +96,12 @@ export default {
         }
       }
     },
-    handleEditStudentNO() {
-      this.isEdit = true;
+    handleEditStudentNO(studentNO) {
+      console.log(studentNO);
+      this.isEdit = studentNO;
     },
     handleSaveStudentNO() {
-      this.isEdit = false;
+      this.isEdit = -1;
     },
   },
 };
