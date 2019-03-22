@@ -1,3 +1,6 @@
+<!--录入结果人工确认界面-->
+<!--在录入一次试卷后识别结果将在此页展示，此时可人工修改识别结果，点击录入系统后正式录入数据库，此时可能出现学号相同的状况
+（即之前的一次录入错误或现在的录入错误）需要后端返回两个录入的信息，再次进行人工修改-->
 <template>
     <div class='result-box'>
         <div class="header">
@@ -5,20 +8,20 @@
         </div>
         <div class="modify-box">
             <el-row>
-                <el-col :span="6" v-for="results in resultsListEnd" :key="results.studentNO">
+                <el-col :span="6" v-for="(results,index) in resultsListEnd" :key="results.studentNO">
                     <el-card class="modify-card" :body-style="{ padding: '0px' }">
                         <div>
                             <img :src="results.image" class='image'>
                             <div>
                                 <div style="margin:10px;height:40px">
-                                    <span v-if="!isEdit">{{ results.studentNO }}</span>
-                                    <el-input v-else-if="isEdit" :key="results.studentNO" v-model="results.studentNO">
+                                    <span v-if="!isEdit[index]">{{ results.studentNO }}</span>
+                                    <el-input v-else-if="isEdit[index]" :key="results.studentNO" v-model="results.studentNO">
                                         <i slot="append" class="remove el-icon-remove"></i>
                                     </el-input>
                                 </div>
                                 <div style="text-align:center">
-                                    <el-button type="primary" icon="el-icon-edit" @click.stop="handleEditStudentNO">编辑</el-button>
-                                    <el-button type="primary" icon="el-icon-setting" @click.stop="handleSaveStudentNO">保存</el-button>
+                                    <el-button type="primary" icon="el-icon-edit" @click.stop="handleEditStudentNO(index)">编辑</el-button>
+                                    <el-button type="primary" icon="el-icon-setting" @click.stop="handleSaveStudentNO(index)">保存</el-button>
                                 </div>
                             </div>
                         </div>
@@ -39,10 +42,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 export default {
     data(){
         return{
-            isEdit:false,
+            isEdit:[],
             currPage:1,
             pageSize:8,
             resultsList:[
@@ -70,9 +74,11 @@ export default {
         if(this.resultsList.length > this.pageSize){
             for(let index = 0;index < this.pageSize; index++){
                 this.resultsListEnd.push(this.resultsList[index]);
+                this.isEdit[index] = false;
             }
         }else{
             this.resultsListEnd = this.resultsList;
+            this.isEdit[index] = false;
         }
     },
     methods:{
@@ -94,11 +100,11 @@ export default {
                 }
             }
         },
-        handleEditStudentNO () {
-            this.isEdit = true
+        handleEditStudentNO (index) {
+            Vue.set(this.isEdit,index,true);
         },
-        handleSaveStudentNO () {
-            this.isEdit = false;
+        handleSaveStudentNO (index) {
+            Vue.set(this.isEdit,index,false);
         },
     }
 }

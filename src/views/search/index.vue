@@ -1,3 +1,5 @@
+<!--搜索界面-->
+<!--可进行模糊查询，展示所有符合条件的学生信息，查询电子版试卷-->
 <template>
     <div>
         <div class='search-box' v-if='!searchSuccess'>
@@ -40,8 +42,8 @@
             </div>
         </div>
         <div class='result-box' v-if='searchSuccess'>
-            <el-tabs type="border-card">
-                <el-tab-pane label="姓名">
+            <el-tabs type="border-card" v-model="activename" @tab-click="handleClick">
+                <el-tab-pane label="姓名" name='SRname'>
                     <el-table :data="searchResultListEnd" style="width: 100%" max-height="500">
                         <el-table-column  prop="SRname" label="姓名"  width="140">
                         </el-table-column>
@@ -76,7 +78,7 @@
                     :total="searchResultList.length">
                     </el-pagination>
                 </el-tab-pane>
-                <el-tab-pane label="学号">
+                <el-tab-pane label="学号" name='SRstuNo'>
                     <el-table :data="searchResultListEnd" style="width: 100%" max-height="500">
                         <el-table-column  prop="SRname" label="姓名"  width="140">
                         </el-table-column>
@@ -111,7 +113,7 @@
                     :total="searchResultList.length">
                     </el-pagination>
                 </el-tab-pane>
-                <el-tab-pane label="考试时间">
+                <el-tab-pane label="考试时间" name='SRdate'>
                     <el-table :data="searchResultListEnd" style="width: 100%" max-height="500">
                         <el-table-column  prop="SRname" label="姓名"  width="140">
                         </el-table-column>
@@ -147,9 +149,6 @@
                     </el-pagination>
                 </el-tab-pane>
             </el-tabs>
-            <div>
-                {{searchResultListEndByName}}
-            </div>
         </div>
     </div>
 </template>
@@ -162,7 +161,7 @@ export default {
             currPage:1,
             pageSize:8,
             searchResultListEnd:[],
-            searchResultListEndByName:[1],
+            activename:'SRstuNo',
             searchResultList:[
                 {SRname:'何',SRstuNo:'2016141462222',SRteacher:'王二',SRCourseNo:'1634533',SRCourseNo:'12',SRdate:'2018-01-01'},
                 {SRname:'李',SRstuNo:'2016141462222',SRteacher:'王二',SRCourseNo:'1634533',SRCourseNo:'12',SRdate:'2018-01-01'},
@@ -196,8 +195,15 @@ export default {
             this.searchResultListEnd = this.searchResultList;
         }
     },
-
     methods:{
+        handleClick() {
+            console.log(this.activename);
+            this.searchResultList.sort(this.sortBy('SRname'));
+            for(let index = 0;index < this.pageSize;index++){
+                console.log(this.searchResultList[index].SRname);
+            }
+            
+        },
         handleSizeChange(val){
             this.pageSize = val;
             this.handleCurrentChange(this.currPage);
