@@ -8,15 +8,15 @@
     </div>
     <div class="modify-box">
       <el-row>
-        <el-col :span="6" v-for="(results, index) in resultsListEnd" :key="results.studentNO">
+        <el-col :span="6" v-for="results in resultsListEnd" :key="results.studentNO">
           <el-card class="modify-card" :body-style="{ padding: '0px' }">
             <div>
               <img :src="results.image" class='image' />
               <div>
                 <div style="margin:10px;height:40px">
-                  <span v-if="!isEdit[index]">{{ results.studentNO }}</span>
+                  <span v-if="!isEdit(results.studentNO)">{{ results.studentNO }}</span>
                   <el-input
-                    v-else-if="isEdit[index]"
+                    v-if="isEdit(results.studentNO)"
                     :key="results.studentNO"
                     v-model="results.studentNO">
                     <i slot="append" class="remove el-icon-remove"></i>
@@ -26,13 +26,13 @@
                   <el-button
                     type="primary"
                     icon="el-icon-edit"
-                    @click.stop="handleEditStudentNO(index)">
+                    @click.stop="handleEditStudentNO(results.studentNO)">
                     编辑
                   </el-button>
                   <el-button
                     type="primary"
                     icon="el-icon-setting"
-                    @click.stop="handleSaveStudentNO(index)">
+                    @click.stop="handleSaveStudentNO(results.studentNO)">
                     保存
                   </el-button>
                 </div>
@@ -59,7 +59,7 @@ import Vue from 'vue';
 export default {
   data() {
     return {
-      isEdit: -1,
+      currEdit: '',
       currPage: 1,
       pageSize: 8,
       resultsList: [
@@ -101,11 +101,16 @@ export default {
         }
       }
     },
-    handleEditStudentNO(index) {
-      Vue.set(this.isEdit, index, true);
+    isEdit(studentNO) {
+      if (this.currEdit === '') return false;
+      return this.currEdit === studentNO;
     },
-    handleSaveStudentNO(index) {
-      Vue.set(this.isEdit, index, false);
+    handleEditStudentNO(studentNO) {
+      this.currEdit = studentNO;
+      console.log(studentNO);
+    },
+    handleSaveStudentNO() {
+      this.currEdit = '';
     },
   },
 };
