@@ -13,9 +13,10 @@ import store from './store';
 
 import './icons'; // icon
 import './permission'; // permission control
+// import './test';
 
 // eslint-disable-next-line
-require('./mock');
+// require('./mock');
 
 Vue.use(Element);
 
@@ -26,3 +27,4 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app');
+

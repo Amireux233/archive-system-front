@@ -5,12 +5,12 @@
   <div class='scan-box'>
     <div class='scan-input'>
       <div>
-        <span>课程号：</span>
-        <el-input placeholder="请输入课程号……" v-model="courseNo" clearable />
+        <span>课程号: </span>
+        <el-input placeholder="请输入课程号" v-model="courseNo" clearable />
       </div>
       <div>
         <span>课序号：</span>
-        <el-input placeholder="请输入课序号……" v-model="lessonNo" clearable />
+        <el-input placeholder="请输入课序号" v-model="lessonNo" clearable />
       </div>
       <div class="date">
         <span >考试日期：</span>

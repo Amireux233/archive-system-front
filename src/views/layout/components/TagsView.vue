@@ -60,7 +60,7 @@ export default {
       if (this.$route.name) {
         return this.$route;
       }
-      return false;
+      return '';
     },
     isActive(route) {
       return route.path === this.$route.path;
@@ -68,10 +68,9 @@ export default {
     addViewTags() {
       const route = this.generateRoute();
       if (!route) {
-        return false;
+        return;
       }
       this.$store.dispatch('addVisitedViews', route);
-      return undefined;
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag;

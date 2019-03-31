@@ -33,7 +33,6 @@
           v-model="loginForm.password"
           placeholder="密码"
           name="password"
-          auto-complete="on"
           @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />

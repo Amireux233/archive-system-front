@@ -19,9 +19,10 @@ export const constantRouterMap = [
   {
     path: '/scan',
     component: Layout,
+    redirect: '/scan/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/scanPaper'),
         name: 'scan',
         meta: { title: '扫描', icon: 'dashboard' },
@@ -31,9 +32,10 @@ export const constantRouterMap = [
   {
     path: '/modify',
     component: Layout,
+    redirect: '/modify/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/modify'),
         name: 'modify',
         meta: { title: '修改', icon: 'dashboard' },
@@ -43,9 +45,10 @@ export const constantRouterMap = [
   {
     path: '/search',
     component: Layout,
+    redirect: '/search/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/search'),
         name: 'search',
         meta: { title: '查找', icon: 'dashboard' },

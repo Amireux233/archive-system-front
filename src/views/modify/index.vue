@@ -8,7 +8,7 @@
     </div>
     <div class="modify-box">
       <el-row>
-        <el-col :span="6" v-for="results in resultsListEnd" :key="results.studentNO">
+        <el-col :span="6" v-for="results in resultsList" :key="results.studentNO">
           <el-card class="modify-card" :body-style="{ padding: '0px' }">
             <div>
               <img :src="results.image" class='image' />
@@ -16,9 +16,8 @@
                 <div style="margin:10px;height:40px">
                   <span v-if="!isEdit(results.studentNO)">{{ results.studentNO }}</span>
                   <el-input
-                    v-if="isEdit(results.studentNO)"
-                    :key="results.studentNO"
-                    v-model="results.studentNO">
+                    v-model="results.studentNO"
+                    v-show="isEdit(results.studentNO)">
                     <i slot="append" class="remove el-icon-remove"></i>
                   </el-input>
                 </div>
@@ -42,7 +41,7 @@
         </el-col>
       </el-row>
     </div>
-      <el-pagination
+    <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currPage"
@@ -54,8 +53,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-
 export default {
   data() {
     return {
@@ -70,17 +67,7 @@ export default {
         // eslint-disable-next-line
         { image: require('../../static/test1.jpg'), studentNO: 3 },
       ],
-      resultsListEnd: [],
     };
-  },
-  created() {
-    if (this.resultsList.length > this.pageSize) {
-      for (let index = 0; index < this.pageSize; index += 1) {
-        this.resultsListEnd.push(this.resultsList[index]);
-      }
-    } else {
-      this.resultsListEnd = this.resultsList;
-    }
   },
   methods: {
     handleSizeChange(val) {
@@ -107,10 +94,11 @@ export default {
     },
     handleEditStudentNO(studentNO) {
       this.currEdit = studentNO;
-      console.log(studentNO);
     },
     handleSaveStudentNO() {
-      this.currEdit = '';
+    },
+    handleInput(studenoNO) {
+      console.log(studenoNO);
     },
   },
 };

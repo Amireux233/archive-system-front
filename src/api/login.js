@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function loginByUsername(username, password) {
+export function loginByUsername(account, password) {
   const data = {
-    username,
+    account,
     password,
   };
   return request({
