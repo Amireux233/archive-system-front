@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getOrder(data) {
+export function fetchPaper(data) {
   return request({
-    url: '/order',
+    url: '/paper/find',
     method: 'post',
     data,
   });
