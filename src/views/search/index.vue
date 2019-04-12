@@ -5,10 +5,14 @@
     <div class="table">
       <el-table :data="paperData" border>
         <el-table-column prop="student_name" label="学生姓名" />
-        <el-table-column prop="student_no" label="学生学号" />
+        <el-table-column prop="student_no" label="学生学号" sortable :sort-method="sortByStudentNo" />
         <el-table-column prop="course_name" label="课程名" />
-        <el-table-column prop="course_no" label="课程号" />
-        <el-table-column prop="course_serial_no" label="课序号" />
+        <el-table-column prop="course_no" label="课程号" sortable :sort-method="sortByCourseNo" />
+        <el-table-column
+          prop="course_serial_no"
+          label="课序号"
+          sortable
+          :sort-method="sortByCourseSerialNo" />
         <el-table-column label="操作">
           <template slot-scope="paper">
             <el-button @click="handleModify(paper)">修改</el-button>
@@ -75,6 +79,15 @@ export default {
     },
     handleSizeChange(...args) {
       console.log(args);
+    },
+    sortByStudentNo(a, b) {
+      return a.student_no > b.student_no;
+    },
+    sortByCourseNo(a, b) {
+      return a.course_no > b.course_no;
+    },
+    sortByCourseSerialNo(a, b) {
+      return a.course_serial_no > b.course_serial_no;
     },
   },
 };
