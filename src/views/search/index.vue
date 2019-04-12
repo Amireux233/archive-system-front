@@ -4,22 +4,75 @@
   <div class="search-wrapper">
     <div class="table">
       <el-table :data="paperData" border>
-        <el-table-column prop="student_name" label="学生姓名" />
-        <el-table-column prop="student_no" label="学生学号" sortable :sort-method="sortByStudentNo" />
-        <el-table-column prop="course_name" label="课程名" />
-        <el-table-column prop="course_no" label="课程号" sortable :sort-method="sortByCourseNo" />
+        <el-table-column prop="student_name" label="学生姓名">
+          <template slot-scope="paper">
+            <span v-show="currentModify.id != paper.row.id">
+              {{ paper.row.student_name }}
+            </span>
+            <el-input v-model="currentModify.student_name"
+              v-show="currentModify.id == paper.row.id" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="student_no" label="学生学号" sortable :sort-method="sortByStudentNo">
+          <template slot-scope="paper">
+            <span v-show="currentModify.id != paper.row.id">
+              {{ paper.row.student_no }}
+            </span>
+            <el-input v-model="currentModify.student_no"
+              v-show="currentModify.id == paper.row.id" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="course_name" label="课程名">
+          <template slot-scope="paper">
+            <span v-show="currentModify.id != paper.row.id">
+              {{ paper.row.course_name }}
+            </span>
+            <el-input v-model="currentModify.course_name"
+              v-show="currentModify.id == paper.row.id" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="course_no" label="课程号" sortable :sort-method="sortByCourseNo">
+          <template slot-scope="paper">
+            <span v-show="currentModify.id != paper.row.id">
+              {{ paper.row.course_no }}
+            </span>
+            <el-input v-model="currentModify.course_no"
+              v-show="currentModify.id == paper.row.id" />
+          </template>
+        </el-table-column>
         <el-table-column
           prop="course_serial_no"
           label="课序号"
           sortable
-          :sort-method="sortByCourseSerialNo" />
+          :sort-method="sortByCourseSerialNo">
+          <template slot-scope="paper">
+            <span v-show="currentModify.id != paper.row.id">
+              {{ paper.row.course_serial_no }}
+            </span>
+            <el-input v-model="currentModify.course_serial_no"
+              v-show="currentModify.id == paper.row.id" />
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="paper">
-            <el-button @click="handleModify(paper)">修改</el-button>
+            <el-button v-show="currentModify.id != paper.row.id"
+              @click="handleModify(paper.row)">
+              修改
+            </el-button>
+            <div v-show="currentModify.id == paper.row.id">
+              <el-button type="primary"
+                @click="handleModifySubmit()">
+                提交
+              </el-button>
+              <el-button type="danger"
+                @click="handleModifyCancel()">
+                取消
+              </el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
-      <div style="margin: 15px;">
+      <div style="margin: 15px; display: flex; justify-content: center;">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -43,7 +96,7 @@
 </template>
 
 <script>
-import { fetchPaper } from '@/api/paper';
+import { fetchPaper, modifyPaper } from '@/api/paper';
 
 export default {
   data() {
@@ -53,6 +106,7 @@ export default {
       pageSize: 15,
       currentPage: 1,
       totalPaper: 10,
+      currentModify: { id: -1 },
     };
   },
   mounted() {
@@ -68,8 +122,19 @@ export default {
       this.paperData = response.data.data;
       this.totalPaper = response.data.total;
     },
-    handleModify() {
-      this.$message.error('Not Implement.');
+    handleModify(paper) {
+      this.currentModify = paper;
+    },
+    async handleModifySubmit() {
+      const request = {
+        paper: this.currentModify,
+      };
+      const response = await modifyPaper(request);
+      console.log(response.data);
+      this.currentModify = { id: -1 };
+    },
+    handleModifyCancel() {
+      this.currentModify = { id: -1 };
     },
     handleSearch() {
       this.$message.error('Not Implement.');

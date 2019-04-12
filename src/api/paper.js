@@ -8,9 +8,9 @@ export function fetchPaper(data) {
   });
 }
 
-export function reDistrubuteOrder(data) {
+export function modifyPaper(data) {
   return request({
-    url: '/order/redistrubute',
+    url: '/paper/modify',
     method: 'post',
     data,
   });
