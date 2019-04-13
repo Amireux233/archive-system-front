@@ -20,6 +20,7 @@ async function addRoutes() {
     router.addRoutes(store.getters.addRouters);
   } catch (error) {
     Message.error('登录失败');
+    await store.dispatch('FedLogOut');
   }
 }
 
