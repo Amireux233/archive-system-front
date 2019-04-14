@@ -8,16 +8,16 @@
     </div>
     <div class="modify-box">
       <el-row>
-        <el-col :span="6" v-for="results in resultsList" :key="results.studentNO">
+        <el-col :span="6" v-for="results in resultsList" :key="results.id">
           <el-card class="modify-card" :body-style="{ padding: '0px' }">
             <div>
               <img :src="results.image" class='image' />
               <div>
                 <div style="margin:10px;height:40px">
-                  <span v-if="!isEdit(results.studentNO)">{{ results.studentNO }}</span>
+                  <span v-if="!isEdit(results.id)">{{ results.student_no }}</span>
                   <el-input
-                    v-model="results.studentNO"
-                    v-show="isEdit(results.studentNO)">
+                    v-model="results.student_no"
+                    v-show="isEdit(results.id)">
                     <i slot="append" class="remove el-icon-remove"></i>
                   </el-input>
                 </div>
@@ -25,13 +25,13 @@
                   <el-button
                     type="primary"
                     icon="el-icon-edit"
-                    @click.stop="handleEditStudentNO(results.studentNO)">
+                    @click.stop="handleEditStudentNO(results.id)">
                     编辑
                   </el-button>
                   <el-button
                     type="primary"
                     icon="el-icon-setting"
-                    @click.stop="handleSaveStudentNO(results.studentNO)">
+                    @click.stop="handleSaveStudentNO(results.id)">
                     保存
                   </el-button>
                 </div>
@@ -56,13 +56,13 @@
 export default {
   data() {
     return {
-      currEdit: '',
+      currEditId: -1,
       currPage: 1,
       pageSize: 8,
       resultsList: [
-        { image: '/static/img.jpg', studentNO: 1 },
-        { image: '/static/img.jpg', studentNO: 2 },
-        { image: '/static/img.jpg', studentNO: 3 },
+        { id: 1, image: '/static/img.jpg', student_no: 1 },
+        { id: 2, image: '/static/img.jpg', student_no: 2 },
+        { id: 3, image: '/static/img.jpg', student_no: 3 },
       ],
     };
   },
@@ -85,15 +85,15 @@ export default {
         }
       }
     },
-    isEdit(studentNO) {
-      if (this.currEdit === '') return false;
-      return this.currEdit === studentNO;
+    isEdit(id) {
+      if (this.currEditId === -1) return false;
+      return this.currEditId === id;
     },
-    handleEditStudentNO(studentNO) {
-      this.currEdit = studentNO;
+    handleEditStudentNO(id) {
+      this.currEditId = id;
     },
     handleSaveStudentNO() {
-      this.currEdit = -1;
+      this.currEditId = -1;
     },
     handleInput(studenoNO) {
       console.log(studenoNO);
