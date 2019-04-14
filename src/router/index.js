@@ -55,6 +55,19 @@ export const constantRouterMap = [
       },
     ],
   },
+  // {
+  //   path: '/course',
+  //   component: Layout,
+  //   redirect: '/course/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/course'),
+  //       name: 'course',
+  //       meta: { title: '课程管理', icon: 'dashboard' },
+  //     },
+  //   ],
+  // },
   // 404
   {
     path: '/404',

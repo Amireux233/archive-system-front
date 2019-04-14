@@ -15,3 +15,11 @@ export function modifyPaper(data) {
     data,
   });
 }
+
+export function fetchAllCourse(data) {
+  return request({
+    url: '/paper/course',
+    method: 'post',
+    data,
+  });
+}

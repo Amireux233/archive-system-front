@@ -27,8 +27,13 @@
             <span v-show="currentModify.id != paper.row.id">
               {{ paper.row.course_name }}
             </span>
-            <el-input v-model="currentModify.course_name"
-              v-show="currentModify.id == paper.row.id" />
+            <el-select v-model="currentModify.course_name"
+              v-show="currentModify.id == paper.row.id">
+              <el-option v-for="course in courseList"
+                :label="course.name"
+                :value="course.id"
+                :key="course.id" />
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="course_no" label="课程号" sortable :sort-method="sortByCourseNo">
@@ -86,17 +91,21 @@
     <div class="filter-wrapper">
       <span style="color: gray; font-weight: bold;">筛&nbsp;选</span>
       <hr style="margin-bottom: 15px;">
-      <el-input placeholder="搜索" v-model="searchKey">
-        <template slot="append">
-          <el-button @click="handleSearch">搜索</el-button>
-        </template>
+      <el-input class="search-input" placeholder="搜索" v-model="searchKey">
+        <el-select v-model="filterKey" placeholder="类型" slot="prepend">
+          <el-option v-for="item in filterEnum"
+            :key="item.id"
+            :label="item.text"
+            :value="item.id" />
+        </el-select>
+        <el-button slot="append" @click="handleSearch">搜索</el-button>
       </el-input>
     </div>
   </div>
 </template>
 
 <script>
-import { fetchPaper, modifyPaper } from '@/api/paper';
+import { fetchPaper, modifyPaper, fetchAllCourse } from '@/api/paper';
 
 export default {
   data() {
@@ -107,20 +116,39 @@ export default {
       currentPage: 1,
       totalPaper: 10,
       currentModify: { id: -1 },
+      courseList: [],
+      filterEnum: [
+        { id: 1, text: '学生姓名' },
+        { id: 2, text: '学生学号' },
+        { id: 3, text: '课程名称' },
+        { id: 4, text: '课程号' },
+        { id: 5, text: '课序号' },
+      ],
+      filterKey: 1,
     };
   },
   mounted() {
-    this.fetchPaper();
+    this.getPaper();
+    this.getCourse();
   },
   methods: {
-    async fetchPaper() {
+    async getPaper() {
       const request = {
         pageSize: this.pageSize,
         currentPage: this.currentPage,
       };
+      if (this.searchKey !== '') {
+        request.filterKey = this.searchKey;
+        request.filterType = this.filterKey;
+      }
       const response = await fetchPaper(request);
+      console.log(response.data);
       this.paperData = response.data.data;
       this.totalPaper = response.data.total;
+    },
+    async getCourse() {
+      const response = await fetchAllCourse();
+      this.courseList = response.data.data;
     },
     handleModify(paper) {
       this.currentModify = paper;
@@ -129,15 +157,16 @@ export default {
       const request = {
         paper: this.currentModify,
       };
-      const response = await modifyPaper(request);
-      console.log(response.data);
+      await modifyPaper(request);
+      this.$message.success('修改成功');
+      this.getPaper();
       this.currentModify = { id: -1 };
     },
     handleModifyCancel() {
       this.currentModify = { id: -1 };
     },
     handleSearch() {
-      this.$message.error('Not Implement.');
+      this.getPaper();
     },
     handleCurrentChange(...args) {
       console.log(args);
@@ -171,6 +200,14 @@ export default {
     border: 1px solid #EBEEF5;
     padding: 15px;
     margin-left: 15px;
+  }
+}
+</style>
+
+<style lang="scss">
+.search-wrapper {
+  .search-input>.el-input-group__prepend {
+    width: 105px;
   }
 }
 </style>
