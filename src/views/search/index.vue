@@ -4,6 +4,11 @@
   <div class="search-wrapper">
     <div class="table">
       <el-table :data="paperData" border>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <img src="/static/img.jpg" alt="" style="width: 150px; height: 150px;" @click="bigImg">
+          </template>
+        </el-table-column>
         <el-table-column prop="student_name" label="学生姓名">
           <template slot-scope="paper">
             <span v-show="currentModify.id != paper.row.id">
@@ -100,6 +105,9 @@
         <el-button slot="append" @click="handleSearch">搜索</el-button>
       </el-input>
     </div>
+    <el-dialog :visible.sync="dialogVisible" title="试卷扫描图像" width="600px">
+      <img src="/static/img.jpg" style="width: 100%; cursor: pointer;" />
+    </el-dialog>
   </div>
 </template>
 
@@ -124,6 +132,7 @@ export default {
         { id: 5, text: '课序号' },
       ],
       filterKey: 1,
+      dialogVisible: false,
     };
   },
   mounted() {
@@ -178,6 +187,9 @@ export default {
     },
     sortByCourseSerialNo(a, b) {
       return a.course_serial_no > b.course_serial_no;
+    },
+    bigImg() {
+      this.dialogVisible = true;
     },
   },
 };
