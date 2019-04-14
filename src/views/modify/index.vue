@@ -60,12 +60,9 @@ export default {
       currPage: 1,
       pageSize: 8,
       resultsList: [
-        // eslint-disable-next-line
-        { image: require('../../static/test1.jpg'), studentNO: 1 },
-        // eslint-disable-next-line
-        { image: require('../../static/test1.jpg'), studentNO: 2 },
-        // eslint-disable-next-line
-        { image: require('../../static/test1.jpg'), studentNO: 3 },
+        { image: '/static/img.jpg', studentNO: 1 },
+        { image: '/static/img.jpg', studentNO: 2 },
+        { image: '/static/img.jpg', studentNO: 3 },
       ],
     };
   },
@@ -96,6 +93,7 @@ export default {
       this.currEdit = studentNO;
     },
     handleSaveStudentNO() {
+      this.currEdit = -1;
     },
     handleInput(studenoNO) {
       console.log(studenoNO);
