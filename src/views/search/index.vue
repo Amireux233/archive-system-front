@@ -79,7 +79,6 @@
       </el-table>
       <div style="margin: 15px; display: flex; justify-content: center;">
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           background
           :current-page="currentPage"
@@ -112,7 +111,7 @@ export default {
     return {
       paperData: [],
       searchKey: '',
-      pageSize: 15,
+      pageSize: 2,
       currentPage: 1,
       totalPaper: 10,
       currentModify: { id: -1 },
@@ -142,7 +141,6 @@ export default {
         request.filterType = this.filterKey;
       }
       const response = await fetchPaper(request);
-      console.log(response.data);
       this.paperData = response.data.data;
       this.totalPaper = response.data.total;
     },
@@ -168,11 +166,9 @@ export default {
     handleSearch() {
       this.getPaper();
     },
-    handleCurrentChange(...args) {
-      console.log(args);
-    },
-    handleSizeChange(...args) {
-      console.log(args);
+    handleCurrentChange(page) {
+      this.currentPage = page;
+      this.getPaper();
     },
     sortByStudentNo(a, b) {
       return a.student_no > b.student_no;
